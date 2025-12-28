@@ -1,13 +1,38 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useEffect } from "react";
+import Hero from "@/components/Hero";
+import OurStory from "@/components/OurStory";
+import Countdown from "@/components/Countdown";
+import GiftList from "@/components/GiftList";
+import RSVP from "@/components/RSVP";
+import Location from "@/components/Location";
+import Footer from "@/components/Footer";
+import { weddingConfig } from "@/data/config";
 
 const Index = () => {
+  // Update page title and meta
+  useEffect(() => {
+    document.title = `${weddingConfig.groomName} & ${weddingConfig.brideName} | Casamento`;
+    
+    // Update meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute(
+        "content",
+        `Site do casamento de ${weddingConfig.groomName} e ${weddingConfig.brideName}. Confirme sua presença e veja nossa lista de presentes.`
+      );
+    }
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <main className="min-h-screen">
+      <Hero />
+      <OurStory />
+      <Countdown />
+      <GiftList />
+      <Location />
+      <RSVP />
+      <Footer />
+    </main>
   );
 };
 
