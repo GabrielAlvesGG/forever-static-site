@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { X, Copy, Check, Gift as GiftIcon, Heart } from "lucide-react";
-import { Gift } from "@/data/gifts";
+import { X, Copy, Check, Heart } from "lucide-react";
+import { Gift, giftPlaceholder } from "@/data/gifts";
 import { weddingConfig } from "@/data/config";
 
 interface GiftModalProps {
@@ -71,6 +71,8 @@ const GiftModal = ({ gift, isOpen, onClose }: GiftModalProps) => {
 
   if (!isOpen || !gift) return null;
 
+  const imageUrl = gift.image || giftPlaceholder;
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-foreground/50 backdrop-blur-sm animate-fade-in"
@@ -84,28 +86,33 @@ const GiftModal = ({ gift, isOpen, onClose }: GiftModalProps) => {
         className="bg-card rounded-2xl shadow-modal w-full max-w-md max-h-[90vh] overflow-y-auto animate-scale-in"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
-        <div className="relative p-6 pb-4 border-b border-border">
+        {/* Image Header */}
+        <div className="relative h-48 overflow-hidden rounded-t-2xl">
+          <img
+            src={imageUrl}
+            alt={gift.name}
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = giftPlaceholder;
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent" />
           <button
             ref={closeButtonRef}
             onClick={onClose}
-            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-muted hover:bg-muted/80 flex items-center justify-center transition-colors"
+            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-background/80 hover:bg-background flex items-center justify-center transition-colors"
             aria-label="Fechar modal"
           >
-            <X className="w-5 h-5 text-muted-foreground" />
+            <X className="w-5 h-5 text-foreground" />
           </button>
+        </div>
 
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-rose/50 flex items-center justify-center">
-              <GiftIcon className="w-6 h-6 text-gold" />
-            </div>
-            <div>
-              <h2 id="modal-title" className="font-serif text-2xl text-foreground">
-                {gift.name}
-              </h2>
-              <p className="text-gold font-semibold">{formatCurrency(gift.value)}</p>
-            </div>
-          </div>
+        {/* Header */}
+        <div className="px-6 pt-2 pb-4 border-b border-border">
+          <h2 id="modal-title" className="font-serif text-2xl text-foreground">
+            {gift.name}
+          </h2>
+          <p className="text-gold font-semibold text-lg">{formatCurrency(gift.value)}</p>
         </div>
 
         {/* Content */}
