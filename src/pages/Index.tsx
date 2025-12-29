@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import Hero from "@/components/Hero";
 import OurStory from "@/components/OurStory";
+import PreWeddingGallery from "@/components/PreWeddingGallery";
 import Countdown from "@/components/Countdown";
 import GiftList from "@/components/GiftList";
 import RSVP from "@/components/RSVP";
@@ -27,6 +28,7 @@ const Index = () => {
     <main className="min-h-screen">
       <Hero />
       <OurStory />
+      <PreWeddingGallery />
       <Countdown />
       <GiftList />
       <Location />
