@@ -227,4 +227,8 @@ const PreWeddingGallery = () => {
   );
 };
 
+<<<<<<< HEAD
 export default PreWeddingGallery;
+=======
+export default PreWeddingGallery;
+>>>>>>> 114a5abd61e29a5016344cfc73a99d35e987a58c
