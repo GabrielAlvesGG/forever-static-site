@@ -49,7 +49,7 @@ const PreWeddingGallery = () => {
           setIsVisible(true);
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     if (sectionRef.current) {
@@ -70,7 +70,7 @@ const PreWeddingGallery = () => {
   const goToPrevious = () => {
     if (selectedPhoto !== null) {
       setSelectedPhoto(
-        selectedPhoto === 0 ? preWeddingPhotos.length - 1 : selectedPhoto - 1
+        selectedPhoto === 0 ? preWeddingPhotos.length - 1 : selectedPhoto - 1,
       );
     }
   };
@@ -78,7 +78,7 @@ const PreWeddingGallery = () => {
   const goToNext = () => {
     if (selectedPhoto !== null) {
       setSelectedPhoto(
-        selectedPhoto === preWeddingPhotos.length - 1 ? 0 : selectedPhoto + 1
+        selectedPhoto === preWeddingPhotos.length - 1 ? 0 : selectedPhoto + 1,
       );
     }
   };
@@ -128,7 +128,8 @@ const PreWeddingGallery = () => {
           </div>
 
           <p className="text-muted-foreground mt-6 max-w-xl mx-auto">
-            Alguns momentos especiais da nossa sessão de fotos antes do grande dia
+            Alguns momentos especiais da nossa sessão de fotos antes do grande
+            dia
           </p>
         </div>
 
@@ -218,7 +219,8 @@ const PreWeddingGallery = () => {
 
             {/* Photo counter */}
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-background/20 text-background text-sm">
-              {selectedPhoto !== null && `${selectedPhoto + 1} / ${preWeddingPhotos.length}`}
+              {selectedPhoto !== null &&
+                `${selectedPhoto + 1} / ${preWeddingPhotos.length}`}
             </div>
           </div>
         </DialogContent>
@@ -227,8 +229,4 @@ const PreWeddingGallery = () => {
   );
 };
 
-<<<<<<< HEAD
 export default PreWeddingGallery;
-=======
-export default PreWeddingGallery;
->>>>>>> 114a5abd61e29a5016344cfc73a99d35e987a58c
