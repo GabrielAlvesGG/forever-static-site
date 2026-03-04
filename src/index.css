@@ -121,17 +121,14 @@
   /* Animações de entrada */
   .animate-fade-up {
     animation: fadeUp 0.8s ease-out forwards;
-    opacity: 0;
   }
 
   .animate-fade-in {
     animation: fadeIn 0.6s ease-out forwards;
-    opacity: 0;
   }
 
   .animate-scale-in {
     animation: scaleIn 0.5s ease-out forwards;
-    opacity: 0;
   }
 
   /* Delays para animações escalonadas */
@@ -262,12 +259,60 @@
 
 /* Intersection Observer - elementos que aparecem ao rolar */
 .reveal {
+  /* Antes: opacity: 0 + translateY, o que pode ocultar permanentemente se o JS não aplicar .visible */
+  opacity: 1;
+  transform: none;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Opt-in: use .reveal.is-hidden quando quiser iniciar oculto e revelar via JS */
+.reveal.is-hidden {
   opacity: 0;
   transform: translateY(30px);
-  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Fallback: se o usuário prefere reduzir movimento, nunca deixe algo invisível por animação */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal.is-hidden,
+  .reveal.visible {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .animate-fade-up,
+  .animate-fade-in,
+  .animate-scale-in {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Fallback: se o JS não remover `opacity-0 translate-y-8` na seção de presentes,
+   force visibilidade apenas nos wrappers de "entrada" (duration-1000 + translate-y-8).
+   Isso evita afetar overlays (opacity-0 + duration-300 etc.). */
+#presentes .opacity-0.translate-y-8.duration-1000 {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Nota: em CSS, NÃO use caminhos do Windows (C:\...).
+   Se precisar de background-image, prefira assets em /public e use url("/images/..."). */
+
+/* Dica: no Hero, `object-cover` corta a imagem (parece “zoom”).
+   Se quiser ver mais da foto, use `object-contain` (ex.: `object-contain md:object-cover`). */
+
+/* (removido) Modal scroll-lock (não usamos modal na “Nossa História”) */
+/* body.modal-open {
+  overflow: hidden;
+} */
+
+
+

@@ -17,20 +17,35 @@ const GiftList = () => {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
+    // Fallback: em alguns ambientes (ex.: browsers antigos / webviews),
+    // `IntersectionObserver` pode não existir ou falhar em disparar.
+    // Como o layout usa `opacity-0` quando `isVisible=false`, preferimos
+    // exibir o conteúdo do que deixar a seção vazia.
+    if (typeof IntersectionObserver === "undefined") {
+      setIsVisible(true);
+      return;
+    }
+
+    let observer: IntersectionObserver | null = null;
+    observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
+          observer?.disconnect();
+          observer = null;
         }
       },
       { threshold: 0.1 }
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+    const element = sectionRef.current;
+    if (element) {
+      observer.observe(element);
+    } else {
+      setIsVisible(true);
     }
 
-    return () => observer.disconnect();
+    return () => observer?.disconnect();
   }, []);
 
   const handleSelectGift = (gift: Gift) => {

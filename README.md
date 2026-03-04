@@ -1,4 +1,4 @@
-# 💒 Site de Casamento - Gabriel & Maria
+# 💒 Site de Casamento - Gabriel & Gabriella
 
 Site de casamento elegante e moderno, pronto para deploy no GitHub Pages.
 
@@ -42,7 +42,7 @@ Abra o arquivo `src/data/config.ts`:
 export const weddingConfig = {
   // Nomes dos noivos
   groomName: "Gabriel",
-  brideName: "Maria", // ⬅️ Altere aqui
+  brideName: "Gabriella", // ⬅️ Altere aqui
 
   // Data e hora do casamento
   weddingDate: "2026-06-20T16:00:00", // ⬅️ Altere aqui
@@ -57,7 +57,7 @@ export const weddingConfig = {
   // Chave PIX
   pix: {
     key: "gabriel.pix@exemplo.com", // ⬅️ Altere aqui
-    recipientName: "Gabriel e Maria",
+    recipientName: "Gabriel e Gabriella",
     // ...
   },
 
