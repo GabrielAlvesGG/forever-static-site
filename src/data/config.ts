@@ -16,21 +16,25 @@ export const weddingConfig = {
   // Locais da cerimônia e festa
   ceremony: {
     name: "Paróquia Nossa Senhora do Brasil",
-    address:
-      "Pça. Nossa Sra. do Brasil, 01 - Jardim America, São Paulo - SP, 01438-060",
-    city: "São Paulo, SP",
+    address: "Pça. Nossa Sra. do Brasil, 01 - Jardim América",
+    city: "São Paulo - SP, 01438-060",
     mapsLink:
       "https://www.google.com/maps/place/Paróquia+Nossa+Senhora+do+Brasil/@-23.5693671,-46.6775401,17z/data=!3m1!4b1!4m6!3m5!1s0x94ce577d17e29ce1:0xe2f8d3bf0f569d98!8m2!3d-23.5693672!4d-46.6726745!16s%2Fm%2F0lqfzh0?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D",
     wazeLink:
       "https://waze.com/ul?q=Pça.%20Nossa%20Sra.%20do%20Brasil,%2001%20-%20Jardim%20America,%20São%20Paulo%20-%20SP,%2001438-060&navigate=yes",
+    description:
+      "Nossa cerimônia será realizada na Paróquia Nossa Senhora do Brasil, em um momento especial de fé e celebração.",
   },
+
   reception: {
-    name: "Espaço Villa Garden",
-    address: "Av. das Rosas, 456 - Jardim Primavera",
-    city: "São Paulo, SP",
+    name: "Bisutti Zero Onze",
+    address: "Local da recepção",
+    city: "São Paulo - SP",
     mapsLink:
       "https://www.google.com/maps/place/Bisutti+Zero+Onze/@-23.5995426,-46.6854149,17z/data=!3m1!4b1!4m6!3m5!1s0x94ce574c4a1a2e0f:0x58dddf7f3f737f4!8m2!3d-23.5995426!4d-46.6828346!16s%2Fg%2F1ptxgs8p_?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3Dn",
     wazeLink: "https://waze.com/ul?ll=-23.5995426,-46.6828346&navigate=yes",
+    description:
+      "Após a cerimônia, receberemos nossos convidados para celebrar esse dia tão especial conosco.",
   },
 
   // Configurações do PIX
