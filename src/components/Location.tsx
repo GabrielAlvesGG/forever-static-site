@@ -42,7 +42,7 @@ const Location = () => {
       mapsLink: weddingConfig.ceremony.mapsLink,
       wazeLink: weddingConfig.ceremony.wazeLink,
       image:
-        "https://lh3.googleusercontent.com/gps-cs-s/AHVAwerc-_sP1sgSbfEmvYNUne-4IJayLtNHC-LI-CCO5lzPHfHKYc5hlxsBZlcxoXOoNHZ8aDNMepeWQFVtYKpuvTVjZykj7anQ20LY_ylWALUPbB6093J2d2TEWYIU7eK956DJCM65=w408-h272-k-no",
+        "https://cdn.alboompro.com/65277638133b0500017d69a4_672058f29b496e0001b08ab4/medium/willian-machado-produtora-ricardo-hara-produtora-7-studio-k-paroquia-nossa-senhora-do-brasil-guia-de-igrejas.jpg?v=1",
       description:
         weddingConfig.ceremony.description ||
         "Será neste local que celebraremos nossa cerimônia.",
