@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { X, Copy, Check, Heart } from "lucide-react";
+import QRCode from "qrcode";
 import { Gift, giftPlaceholder } from "@/data/gifts";
 import { weddingConfig } from "@/data/config";
+import { buildPixPayload } from "@/utils/pix";
 
 interface GiftModalProps {
   gift: Gift | null;
@@ -11,6 +13,7 @@ interface GiftModalProps {
 
 const GiftModal = ({ gift, isOpen, onClose }: GiftModalProps) => {
   const [copied, setCopied] = useState(false);
+  const [qrCodeUrl, setQrCodeUrl] = useState("");
   const modalRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -22,7 +25,43 @@ const GiftModal = ({ gift, isOpen, onClose }: GiftModalProps) => {
     }).format(value);
   };
 
-  // Handle ESC key
+  const pixPayload = useMemo(() => {
+    if (!gift) return "";
+
+    const amount = gift.value > 0 ? gift.value : undefined;
+
+    return buildPixPayload({
+      pixKey: weddingConfig.pix.key,
+      recipientName: weddingConfig.pix.recipientName,
+      city: weddingConfig.pix.city,
+      amount,
+      description: `Presente: ${gift.name}`,
+      txid: `GIFT${gift.id}`,
+    });
+  }, [gift]);
+
+  useEffect(() => {
+    const generateQrCode = async () => {
+      if (!pixPayload || !isOpen) {
+        setQrCodeUrl("");
+        return;
+      }
+
+      try {
+        const url = await QRCode.toDataURL(pixPayload, {
+          width: 240,
+          margin: 2,
+        });
+        setQrCodeUrl(url);
+      } catch (error) {
+        console.error("Erro ao gerar QR Code PIX:", error);
+        setQrCodeUrl("");
+      }
+    };
+
+    generateQrCode();
+  }, [pixPayload, isOpen]);
+
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -33,7 +72,6 @@ const GiftModal = ({ gift, isOpen, onClose }: GiftModalProps) => {
     if (isOpen) {
       document.addEventListener("keydown", handleEsc);
       document.body.style.overflow = "hidden";
-      // Focus trap - focus the close button when modal opens
       closeButtonRef.current?.focus();
     }
 
@@ -43,23 +81,22 @@ const GiftModal = ({ gift, isOpen, onClose }: GiftModalProps) => {
     };
   }, [isOpen, onClose]);
 
-  // Handle click outside
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
       onClose();
     }
   };
 
-  // Copy PIX key
   const handleCopyPix = async () => {
+    if (!pixPayload) return;
+
     try {
-      await navigator.clipboard.writeText(weddingConfig.pix.key);
+      await navigator.clipboard.writeText(pixPayload);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      // Fallback for older browsers
+    } catch {
       const input = document.createElement("input");
-      input.value = weddingConfig.pix.key;
+      input.value = pixPayload;
       document.body.appendChild(input);
       input.select();
       document.execCommand("copy");
@@ -86,7 +123,6 @@ const GiftModal = ({ gift, isOpen, onClose }: GiftModalProps) => {
         className="bg-card rounded-2xl shadow-modal w-full max-w-md max-h-[90vh] overflow-y-auto animate-scale-in"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Image Header */}
         <div className="relative h-48 overflow-hidden rounded-t-2xl">
           <img
             src={imageUrl}
@@ -107,20 +143,18 @@ const GiftModal = ({ gift, isOpen, onClose }: GiftModalProps) => {
           </button>
         </div>
 
-        {/* Header */}
         <div className="px-6 pt-2 pb-4 border-b border-border">
           <h2 id="modal-title" className="font-serif text-2xl text-foreground">
             {gift.name}
           </h2>
-          <p className="text-gold font-semibold text-lg">{formatCurrency(gift.value)}</p>
+          <p className="text-gold font-semibold text-lg">
+            {formatCurrency(gift.value)}
+          </p>
         </div>
 
-        {/* Content */}
         <div className="p-6 space-y-6">
-          {/* Description */}
           <p className="text-muted-foreground">{gift.description}</p>
 
-          {/* Thank you message */}
           <div className="flex items-center gap-2 p-4 rounded-xl bg-rose/30 border border-rose-dark/20">
             <Heart className="w-5 h-5 text-rose-dark flex-shrink-0" />
             <p className="text-sm text-foreground/80">
@@ -128,78 +162,100 @@ const GiftModal = ({ gift, isOpen, onClose }: GiftModalProps) => {
             </p>
           </div>
 
-          {/* PIX info */}
           <div className="space-y-3">
             <h3 className="font-serif text-lg text-foreground">Dados do PIX</h3>
-            
+
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">
-                <span className="font-medium">Recebedor:</span> {weddingConfig.pix.recipientName}
+                <span className="font-medium">Recebedor:</span>{" "}
+                {weddingConfig.pix.recipientName}
               </p>
+
               {weddingConfig.pix.bank && (
                 <p className="text-sm text-muted-foreground">
-                  <span className="font-medium">Banco:</span> {weddingConfig.pix.bank}
+                  <span className="font-medium">Banco:</span>{" "}
+                  {weddingConfig.pix.bank}
                 </p>
               )}
             </div>
 
-            {/* PIX key copy field */}
+            {qrCodeUrl && (
+              <div className="flex flex-col items-center justify-center rounded-xl border border-border bg-background p-4">
+                <img
+                  src={qrCodeUrl}
+                  alt={`QR Code PIX para ${gift.name}`}
+                  className="w-56 h-56 object-contain"
+                />
+                <p className="text-xs text-muted-foreground text-center mt-3">
+                  Escaneie o QR Code no app do banco
+                </p>
+              </div>
+            )}
+
             <div className="space-y-2">
               <label className="text-sm text-muted-foreground font-medium">
-                Chave PIX:
+                PIX copia e cola:
               </label>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  readOnly
-                  value={weddingConfig.pix.key}
-                  className="flex-1 px-4 py-3 rounded-lg bg-muted border border-border text-foreground text-sm font-mono"
-                  onClick={(e) => (e.target as HTMLInputElement).select()}
-                />
-                <button
-                  onClick={handleCopyPix}
-                  className={`px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all duration-300 min-w-[100px] justify-center ${
-                    copied
-                      ? "bg-green-500 text-background"
-                      : "bg-gradient-gold text-background hover:shadow-lg"
-                  }`}
-                >
-                  {copied ? (
-                    <>
-                      <Check className="w-4 h-4" />
-                      Copiado!
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-4 h-4" />
-                      Copiar
-                    </>
-                  )}
-                </button>
-              </div>
+
+              <textarea
+                readOnly
+                value={pixPayload}
+                rows={5}
+                className="w-full px-4 py-3 rounded-lg bg-muted border border-border text-foreground text-xs leading-relaxed resize-none"
+                onClick={(e) => (e.target as HTMLTextAreaElement).select()}
+              />
+
+              <button
+                onClick={handleCopyPix}
+                className={`w-full px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all duration-300 justify-center ${
+                  copied
+                    ? "bg-green-500 text-background"
+                    : "bg-gradient-gold text-background hover:shadow-lg"
+                }`}
+              >
+                {copied ? (
+                  <>
+                    <Check className="w-4 h-4" />
+                    Copiado!
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-4 h-4" />
+                    Copiar código PIX
+                  </>
+                )}
+              </button>
             </div>
 
-            {/* Value reminder */}
-            {gift.value > 0 && (
+            {gift.value > 0 ? (
               <p className="text-sm text-muted-foreground text-center pt-2">
-                Valor sugerido: <span className="text-gold font-semibold">{formatCurrency(gift.value)}</span>
+                Valor do presente:{" "}
+                <span className="text-gold font-semibold">
+                  {formatCurrency(gift.value)}
+                </span>
+              </p>
+            ) : (
+              <p className="text-sm text-muted-foreground text-center pt-2">
+                Este presente está com{" "}
+                <span className="text-gold font-semibold">valor livre</span>. O
+                convidado poderá definir o valor no banco.
               </p>
             )}
           </div>
 
-          {/* Instructions */}
           <div className="p-4 rounded-xl bg-muted/50 border border-border">
-            <h4 className="font-medium text-foreground mb-2 text-sm">Como fazer:</h4>
+            <h4 className="font-medium text-foreground mb-2 text-sm">
+              Como fazer:
+            </h4>
             <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
-              <li>Copie a chave PIX acima</li>
+              <li>Escaneie o QR Code ou copie o código PIX</li>
               <li>Abra o app do seu banco</li>
               <li>Escolha a opção PIX</li>
-              <li>Cole a chave e confirme o valor</li>
+              <li>Confirme os dados e finalize o pagamento</li>
             </ol>
           </div>
         </div>
 
-        {/* Footer */}
         <div className="p-6 pt-0">
           <button
             onClick={onClose}

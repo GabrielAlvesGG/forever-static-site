@@ -50,7 +50,7 @@ const GiftCard = ({ gift, onSelect }: GiftCardProps) => {
             onClick={() => onSelect(gift)}
             className="w-full py-2.5 px-4 rounded-lg bg-gradient-gold text-background font-medium text-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
           >
-            Ver PIX
+            Ver QR Code
           </button>
         </div>
       </div>
