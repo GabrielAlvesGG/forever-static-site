@@ -17,10 +17,6 @@ const GiftList = () => {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    // Fallback: em alguns ambientes (ex.: browsers antigos / webviews),
-    // `IntersectionObserver` pode não existir ou falhar em disparar.
-    // Como o layout usa `opacity-0` quando `isVisible=false`, preferimos
-    // exibir o conteúdo do que deixar a seção vazia.
     if (typeof IntersectionObserver === "undefined") {
       setIsVisible(true);
       return;
@@ -58,12 +54,15 @@ const GiftList = () => {
     setTimeout(() => setSelectedGift(null), 300);
   };
 
-  // Filter and sort gifts
   const filteredGifts = gifts
     .filter((gift) => {
-      const matchesSearch = gift.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      const matchesSearch =
+        gift.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         gift.description.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesCategory = selectedCategory === "all" || gift.category === selectedCategory;
+
+      const matchesCategory =
+        selectedCategory === "all" || gift.category === selectedCategory;
+
       return matchesSearch && matchesCategory;
     })
     .sort((a, b) => {
@@ -80,7 +79,7 @@ const GiftList = () => {
       ref={sectionRef}
       className="py-20 md:py-32 bg-card relative overflow-hidden"
     >
-      <div className="container px-4">
+      <div className="container px-4 max-w-7xl mx-auto">
         {/* Section title */}
         <div
           className={`text-center mb-12 transition-all duration-1000 ${
@@ -133,7 +132,11 @@ const GiftList = () => {
             >
               <SlidersHorizontal className="w-5 h-5" />
               <span>Filtros</span>
-              <ChevronDown className={`w-4 h-4 transition-transform ${isFiltersOpen ? "rotate-180" : ""}`} />
+              <ChevronDown
+                className={`w-4 h-4 transition-transform ${
+                  isFiltersOpen ? "rotate-180" : ""
+                }`}
+              />
             </button>
 
             {/* Sort (desktop) */}
@@ -177,8 +180,10 @@ const GiftList = () => {
               >
                 Todos ({gifts.length})
               </button>
+
               {categories.map(([key, label]) => {
                 const count = gifts.filter((g) => g.category === key).length;
+
                 return (
                   <button
                     key={key}
@@ -198,13 +203,16 @@ const GiftList = () => {
 
           {/* Results count */}
           <p className="text-sm text-muted-foreground mt-4">
-            {filteredGifts.length} {filteredGifts.length === 1 ? "presente encontrado" : "presentes encontrados"}
+            {filteredGifts.length}{" "}
+            {filteredGifts.length === 1
+              ? "presente encontrado"
+              : "presentes encontrados"}
           </p>
         </div>
 
         {/* Gifts grid */}
         <div
-          className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 transition-all duration-1000 delay-400 ${
+          className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 lg:gap-8 items-stretch transition-all duration-1000 delay-400 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
@@ -212,7 +220,7 @@ const GiftList = () => {
             <div
               key={gift.id}
               style={{ animationDelay: `${index * 50}ms` }}
-              className="animate-fade-up"
+              className="animate-fade-up h-full"
             >
               <GiftCard gift={gift} onSelect={handleSelectGift} />
             </div>

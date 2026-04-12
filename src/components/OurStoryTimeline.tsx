@@ -2,46 +2,15 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import timelineData, { TimelineItem } from "@/data/timelineData";
 
-type Props = {
-  open?: boolean;
-  defaultOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
-};
-
 type Media = TimelineItem["media"][number];
 
-export default function OurStoryTimeline({
-  open,
-  defaultOpen = true,
-  onOpenChange,
-}: Props) {
+export default function OurStoryTimeline() {
   const items = useMemo(() => timelineData, []);
-  const [internalOpen, setInternalOpen] = useState<boolean>(defaultOpen);
-  const isOpen = open ?? internalOpen;
-
-  useEffect(() => {
-    if (open === undefined) {
-      setInternalOpen(defaultOpen);
-    }
-  }, [defaultOpen, open]);
-
-  useEffect(() => {
-    onOpenChange?.(isOpen);
-  }, [isOpen, onOpenChange]);
 
   return (
     <section className="bg-gradient-hero">
       <div className="max-w-6xl mx-auto px-4 py-16 sm:py-20">
-        <div
-          id="nossa-historia"
-          aria-hidden={!isOpen}
-          className={[
-            "mt-10 overflow-hidden transition-[max-height,opacity] duration-700 ease-out",
-            isOpen
-              ? "max-h-[12000px] opacity-100"
-              : "max-h-0 opacity-0 pointer-events-none",
-          ].join(" ")}
-        >
+        <div id="nossa-historia" className="mt-10">
           <div className="relative">
             {/* Linha central desktop */}
             <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gold/30" />

@@ -34,12 +34,15 @@ const GiftCard = ({ gift, onSelect }: GiftCardProps) => {
 
       {/* Content */}
       <div className="p-5 flex-1 flex flex-col">
-        <h3 className="font-serif text-lg text-foreground mb-1.5 leading-tight line-clamp-1">
-          {gift.name}
-        </h3>
-        <p className="text-muted-foreground text-sm mb-4 line-clamp-2 flex-1">
-          {gift.description}
-        </p>
+        <div className="flex-1">
+          <h3 className="font-serif text-lg text-foreground mb-2 leading-snug break-words whitespace-normal">
+            {gift.name}
+          </h3>
+
+          <p className="text-muted-foreground text-sm mb-4 leading-relaxed break-words whitespace-normal">
+            {gift.description}
+          </p>
+        </div>
 
         {/* Price and button */}
         <div className="mt-auto pt-3 border-t border-border/50">

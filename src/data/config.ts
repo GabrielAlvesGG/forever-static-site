@@ -11,13 +11,13 @@ export const weddingConfig = {
   // Data e hora do casamento (formato: YYYY-MM-DDTHH:MM:SS)
   // Horário em formato 24h, horário de Brasília (UTC-03:00)
   // Inclui o offset para evitar variações de fuso/parse em alguns navegadores.
-  weddingDate: "2026-07-18T17:00:00-03:00",
+  weddingDate: "2026-07-18T16:30:00-03:00",
 
   // Locais da cerimônia e festa
   ceremony: {
     name: "Paróquia Nossa Senhora do Brasil",
     address: "Pça. Nossa Sra. do Brasil, 01 - Jardim América",
-    city: "São Paulo - SP, 01438-060",
+    city: "",
     mapsLink:
       "https://www.google.com/maps/place/Paróquia+Nossa+Senhora+do+Brasil/@-23.5693671,-46.6775401,17z/data=!3m1!4b1!4m6!3m5!1s0x94ce577d17e29ce1:0xe2f8d3bf0f569d98!8m2!3d-23.5693672!4d-46.6726745!16s%2Fm%2F0lqfzh0?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D",
     wazeLink:
@@ -46,11 +46,11 @@ export const weddingConfig = {
   },
 
   // Nossa História - texto emotivo sobre o casal
-  ourStory: `A nossa história começou em uma tarde comum de outono, quando nossos olhares se cruzaram pela primeira vez. O que parecia ser apenas um encontro casual transformou-se em uma conexão profunda e verdadeira.
+  ourStory: `Nossa história começou de forma inesperada, pelo Instagram, através de um conhecido em comum. O primeiro encontro, que seria em uma cervejaria, mudou de rumo quando o lugar estava fechado e nos levou até a Vila Madalena, onde tudo começou a fazer sentido entre nós.
 
-Entre cafés, longas conversas e risadas compartilhadas, descobrimos que o amor verdadeiro existe e que ele estava ali, esperando por nós dois. Cada momento juntos nos mostrou que éramos feitos um para o outro.
+Entre conversas, risadas, dança e encontros que vieram depois, fomos construindo uma conexão cada vez mais forte. No Ibirapuera, oficializamos nosso namoro com um anel de coco, escolhido como símbolo do nosso amor e da nossa caminhada juntos.
 
-Hoje, depois de tantas memórias construídas, decidimos unir nossas vidas para sempre. E é com o coração transbordando de felicidade que convidamos você para celebrar conosco este dia tão especial.`,
+Anos depois, em 2024, em uma viagem para Monte Verde, no topo da Pedra Redonda, vivemos mais um momento inesquecível: o pedido de casamento. E agora, com o coração cheio de alegria, convidamos vocês para fazer parte do nosso grande dia.`,
 
   // Mensagem após a data do casamento
   afterWeddingMessage: "Obrigado por fazer parte da nossa história! 💕",
