@@ -11,11 +11,24 @@ interface GiftModalProps {
   onClose: () => void;
 }
 
+type PixOption = {
+  label: string;
+  key: string;
+  recipientName: string;
+  city: string;
+  bank?: string;
+};
+
 const GiftModal = ({ gift, isOpen, onClose }: GiftModalProps) => {
   const [copied, setCopied] = useState(false);
   const [qrCodeUrl, setQrCodeUrl] = useState("");
+  const [selectedPixIndex, setSelectedPixIndex] = useState(0);
   const modalRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  const pixOptions: PixOption[] = weddingConfig.pixOptions ?? [];
+
+  const selectedPix = pixOptions[selectedPixIndex] ?? pixOptions[0];
 
   const formatCurrency = (value: number) => {
     if (value === 0) return "Valor livre";
@@ -25,20 +38,25 @@ const GiftModal = ({ gift, isOpen, onClose }: GiftModalProps) => {
     }).format(value);
   };
 
+  useEffect(() => {
+    setCopied(false);
+    setSelectedPixIndex(0);
+  }, [gift, isOpen]);
+
   const pixPayload = useMemo(() => {
-    if (!gift) return "";
+    if (!gift || !selectedPix) return "";
 
     const amount = gift.value > 0 ? gift.value : undefined;
 
     return buildPixPayload({
-      pixKey: weddingConfig.pix.key,
-      recipientName: weddingConfig.pix.recipientName,
-      city: weddingConfig.pix.city,
+      pixKey: selectedPix.key,
+      recipientName: selectedPix.recipientName,
+      city: selectedPix.city,
       amount,
       description: `Presente: ${gift.name}`,
       txid: `GIFT${gift.id}`,
     });
-  }, [gift]);
+  }, [gift, selectedPix]);
 
   useEffect(() => {
     const generateQrCode = async () => {
@@ -108,6 +126,33 @@ const GiftModal = ({ gift, isOpen, onClose }: GiftModalProps) => {
 
   if (!isOpen || !gift) return null;
 
+  if (!pixOptions.length) {
+    return (
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-foreground/50 backdrop-blur-sm animate-fade-in"
+        onClick={handleOverlayClick}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+      >
+        <div className="bg-card rounded-2xl shadow-modal w-full max-w-md p-6">
+          <h2 id="modal-title" className="font-serif text-2xl text-foreground">
+            Configuração de PIX ausente
+          </h2>
+          <p className="text-muted-foreground mt-3">
+            Nenhuma opção de PIX foi configurada em weddingConfig.pixOptions.
+          </p>
+          <button
+            onClick={onClose}
+            className="w-full mt-6 py-3 px-4 rounded-lg border-2 border-gold text-foreground font-medium hover:bg-gold/10 transition-colors"
+          >
+            Fechar
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   const imageUrl = gift.image || giftPlaceholder;
 
   return (
@@ -163,18 +208,51 @@ const GiftModal = ({ gift, isOpen, onClose }: GiftModalProps) => {
           </div>
 
           <div className="space-y-3">
+            <h3 className="font-serif text-lg text-foreground">Escolha para quem enviar</h3>
+
+            <div className="grid grid-cols-2 gap-2">
+              {pixOptions.map((option, index) => {
+                const isActive = selectedPixIndex === index;
+
+                return (
+                  <button
+                    key={`${option.label}-${option.key}`}
+                    type="button"
+                    onClick={() => {
+                      setSelectedPixIndex(index);
+                      setCopied(false);
+                    }}
+                    className={`px-4 py-3 rounded-lg border text-sm font-medium transition-all ${
+                      isActive
+                        ? "bg-gradient-gold text-background border-gold shadow-md"
+                        : "bg-background text-foreground border-border hover:border-gold/60"
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="space-y-3">
             <h3 className="font-serif text-lg text-foreground">Dados do PIX</h3>
 
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">
                 <span className="font-medium">Recebedor:</span>{" "}
-                {weddingConfig.pix.recipientName}
+                {selectedPix.recipientName}
               </p>
 
-              {weddingConfig.pix.bank && (
+              <p className="text-sm text-muted-foreground">
+                <span className="font-medium">Chave:</span>{" "}
+                {selectedPix.key}
+              </p>
+
+              {selectedPix.bank && (
                 <p className="text-sm text-muted-foreground">
                   <span className="font-medium">Banco:</span>{" "}
-                  {weddingConfig.pix.bank}
+                  {selectedPix.bank}
                 </p>
               )}
             </div>
@@ -183,7 +261,7 @@ const GiftModal = ({ gift, isOpen, onClose }: GiftModalProps) => {
               <div className="flex flex-col items-center justify-center rounded-xl border border-border bg-background p-4">
                 <img
                   src={qrCodeUrl}
-                  alt={`QR Code PIX para ${gift.name}`}
+                  alt={`QR Code PIX para ${gift.name} - ${selectedPix.label}`}
                   className="w-56 h-56 object-contain"
                 />
                 <p className="text-xs text-muted-foreground text-center mt-3">
@@ -248,6 +326,7 @@ const GiftModal = ({ gift, isOpen, onClose }: GiftModalProps) => {
               Como fazer:
             </h4>
             <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
+              <li>Escolha se deseja presentear no PIX do noivo ou da noiva</li>
               <li>Escaneie o QR Code ou copie o código PIX</li>
               <li>Abra o app do seu banco</li>
               <li>Escolha a opção PIX</li>

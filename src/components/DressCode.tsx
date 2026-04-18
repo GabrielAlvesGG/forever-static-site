@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Shirt, Ban, BadgeInfo, Palette, Check } from "lucide-react";
 import ternosMasculinos from "../img/ternos_masculinos.png";
-import vestimentaFemina from "../img/vestimenta_feminina.png";
+import vestimentaFemina from "../img/vestimenta_feminina.jpeg";
 import paletaMadrinhas from "../img/paleta_madrinhas.png";
-import restricoesIgreja from "../img/restricoes_igreja.png";
+import restricoesIgreja from "../img/restricoes_igreja.jpeg";
 
 const womenRules = ["Vestidos longos.", "Traje social completo."];
 

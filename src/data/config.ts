@@ -6,7 +6,7 @@
 export const weddingConfig = {
   // Nomes dos noivos
   groomName: "Gabriel",
-  brideName: "Gabriella", // Altere para o nome da noiva
+  brideName: "Gabriella",
 
   // Data e hora do casamento (formato: YYYY-MM-DDTHH:MM:SS)
   // Horário em formato 24h, horário de Brasília (UTC-03:00)
@@ -38,12 +38,23 @@ export const weddingConfig = {
   },
 
   // Configurações do PIX
-  pix: {
-    key: "+5511949008619", // Chave PIX (CPF, email, telefone ou aleatória)
-    recipientName: "GABRIEL ALVES DE OLIVEIRA", // Nome que aparece no PIX
-    city: "SAO PAULO",
-    bank: "Nubank", // Opcional
-  },
+  pixOptions: [
+    {
+      label: "PIX da Noiva",
+      key: "+5511954998484",
+      recipientName: "Gabriella Simões Apostolou",
+      city: "SAO PAULO",
+      bank: "Nubank"
+    },
+    {
+      label: "PIX do Noivo",
+      key: "+5511949008619",
+      recipientName: "GABRIEL ALVES DE OLIVEIRA",
+      city: "SAO PAULO",
+      bank: "Nubank",
+    },
+
+  ],
 
   // Nossa História - texto emotivo sobre o casal
   ourStory: `Nossa história começou de forma inesperada, pelo Instagram, através de um conhecido em comum. O primeiro encontro, que seria em uma cervejaria, mudou de rumo quando o lugar estava fechado e nos levou até a Vila Madalena, onde tudo começou a fazer sentido entre nós.
