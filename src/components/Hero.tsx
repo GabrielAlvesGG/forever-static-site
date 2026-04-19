@@ -21,6 +21,15 @@ const Hero = () => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const siteSections = [
+    "Nossa História",
+    "Linha do Tempo",
+    "Cerimônia",
+    "Recepção",
+    "Presentes",
+    "Presença",
+  ];
+
   return (
     <section className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
       {/* Background Image */}
@@ -32,7 +41,7 @@ const Hero = () => {
           loading="eager"
           style={{ objectPosition: "50% 20%" }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-foreground/60 via-foreground/40 to-foreground/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-foreground/60 via-foreground/40 to-foreground/75" />
       </div>
 
       {/* Decorative elements */}
@@ -44,7 +53,7 @@ const Hero = () => {
       {/* Main content */}
       <div className="container relative z-10 text-center px-4 py-20">
         <p
-          className={`text-background/80 tracking-[0.3em] uppercase text-sm mb-6 transition-all duration-1000 ${
+          className={`text-background tracking-[0.3em] uppercase text-sm mb-6 transition-all duration-1000 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >
@@ -52,7 +61,7 @@ const Hero = () => {
         </p>
 
         <h1
-          className={`font-script text-6xl sm:text-7xl md:text-8xl lg:text-9xl text-background mb-6 transition-all duration-1000 delay-200 drop-shadow-lg ${
+          className={`font-script text-5xl sm:text-7xl md:text-8xl lg:text-9xl text-background mb-6 transition-all duration-1000 delay-200 drop-shadow-lg leading-tight ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >
@@ -80,7 +89,7 @@ const Hero = () => {
         </p>
 
         <p
-          className={`text-background/80 text-base sm:text-lg mb-12 transition-all duration-1000 delay-500 ${
+          className={`text-background text-base sm:text-lg mb-10 transition-all duration-1000 delay-500 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >
@@ -88,23 +97,28 @@ const Hero = () => {
         </p>
 
         <div
-          className={`flex flex-col sm:flex-row gap-4 justify-center items-center transition-all duration-1000 delay-700 ${
+          className={`max-w-3xl mx-auto transition-all duration-1000 delay-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >
-          <button
-            onClick={() => scrollToSection("presentes")}
-            className="btn-gold min-w-[200px]"
-          >
-            Ver Presentes
-          </button>
+          <div className="inline-block max-w-full rounded-2xl bg-background/10 backdrop-blur-sm border border-background/15 px-5 py-4 sm:px-6 sm:py-5 shadow-lg">
+            <p className="text-background text-xs sm:text-sm uppercase tracking-[0.25em] mb-4">
+              Nesta página
+            </p>
 
-          <button
-            onClick={() => scrollToSection("rsvp")}
-            className="px-8 py-3 rounded-full font-medium border-2 border-background text-background hover:bg-background/20 transition-all duration-300 min-w-[200px]"
-          >
-            Confirmar Presença
-          </button>
+            <div className="flex flex-wrap justify-center gap-x-3 gap-y-2 text-sm sm:text-base md:text-lg text-background">
+              {siteSections.map((section, index) => (
+                <div key={section} className="flex items-center gap-3">
+                  <span className="font-serif whitespace-nowrap">
+                    {section}
+                  </span>
+                  {index < siteSections.length - 1 && (
+                    <span className="text-gold/90">•</span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -116,11 +130,11 @@ const Hero = () => {
       >
         <button
           onClick={() => scrollToSection("nossa-historia")}
-          className="flex flex-col items-center text-background/70 hover:text-background transition-colors"
+          className="flex flex-col items-center text-background/80 hover:text-background transition-colors"
           aria-label="Rolar para baixo"
         >
           <span className="text-xs tracking-wider uppercase mb-2">
-            Saiba mais
+            Continue descendo
           </span>
           <ChevronDown className="w-5 h-5 animate-float" />
         </button>
