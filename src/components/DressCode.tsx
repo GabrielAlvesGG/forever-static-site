@@ -52,7 +52,6 @@ function DressImageCard({
       className="overflow-hidden rounded-[2rem] border border-border/60 bg-card/85 shadow-soft transition-all duration-500 hover:-translate-y-1 hover:shadow-card"
       style={{ animationDelay: `${delay}ms` }}
     >
-      {/* Ajustado para ficar menos alto e mais agradável */}
       <div className="relative h-[270px] sm:h-[310px] lg:h-[340px] overflow-hidden bg-[#f6f1ec]">
         <img
           src={image}
@@ -138,7 +137,6 @@ function HighlightImageCard({
       style={{ animationDelay: `${delay}ms` }}
     >
       <div className="grid grid-cols-1 lg:grid-cols-[0.95fr_1.05fr]">
-        {/* Mantido padrão de madrinhas e igreja */}
         <div className="relative h-[280px] sm:h-[340px] lg:h-[420px] overflow-hidden bg-[#f6f1ec]">
           <img
             src={image}
@@ -244,7 +242,6 @@ const DressCode = () => {
           </p>
         </div>
 
-        {/* Cores das madrinhas */}
         <div
           className={`mb-8 transition-all duration-1000 delay-100 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -264,7 +261,6 @@ const DressCode = () => {
           />
         </div>
 
-        {/* Trajes */}
         <div
           className={`grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8 transition-all duration-1000 delay-200 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -289,7 +285,6 @@ const DressCode = () => {
           />
         </div>
 
-        {/* Restrições da igreja */}
         <div
           className={`mb-8 transition-all duration-1000 delay-300 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -307,38 +302,63 @@ const DressCode = () => {
           />
         </div>
 
-        {/* Observação */}
-        <div
+         <div
           className={`transition-all duration-1000 delay-400 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <div className="max-w-3xl mx-auto rounded-3xl border border-gold/20 bg-gradient-to-r from-background via-rose/10 to-background p-6 md:p-7 text-center shadow-soft">
-            <div className="inline-flex items-center justify-center gap-2 mb-3">
-              <BadgeInfo className="w-4 h-4 text-gold" />
-              <h4 className="font-serif text-xl md:text-2xl text-foreground">
-                Observação
+          <div className="max-w-4xl mx-auto relative overflow-hidden rounded-[2rem] border border-gold/25 bg-gradient-to-br from-background via-rose/10 to-background p-6 md:p-8 lg:p-10 text-center shadow-soft">
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent" />
+            <div className="absolute -top-10 -left-10 w-28 h-28 bg-gold/10 rounded-full blur-3xl" />
+            <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-rose/15 rounded-full blur-3xl" />
+
+            <div className="relative z-10">
+              <div className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full border border-gold/20 bg-background/80 mb-4">
+                <BadgeInfo className="w-4 h-4 text-gold" />
+                <span className="text-[11px] sm:text-xs tracking-[0.22em] uppercase text-gold">
+                  Orientação para a cerimônia
+                </span>
+              </div>
+
+              <h4 className="font-serif text-2xl md:text-3xl text-foreground mb-3">
+                Um detalhe que preserva a elegância do momento
               </h4>
-            </div>
 
-            <p className="text-foreground/85 leading-relaxed">
-              Se necessário, utilize uma <strong>enxarpe</strong> ou um{" "}
-              <strong>casaquinho não transparente</strong>.
-            </p>
+              <p className="text-muted-foreground text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl mx-auto mb-5">
+                Para que todos estejam em harmonia com a proposta da celebração
+                religiosa, deixamos abaixo uma recomendação especial.
+              </p>
 
-            <div className="mt-4 flex flex-wrap justify-center gap-3">
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/60 bg-background/70 text-sm text-foreground/80">
-                <Check className="w-4 h-4 text-gold" />
-                Mais conforto
-              </span>
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/60 bg-background/70 text-sm text-foreground/80">
-                <Check className="w-4 h-4 text-gold" />
-                Mais elegância
-              </span>
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/60 bg-background/70 text-sm text-foreground/80">
-                <Check className="w-4 h-4 text-gold" />
-                Mais alinhamento com a cerimônia
-              </span>
+              <div className="max-w-2xl mx-auto rounded-2xl border border-border/50 bg-background/70 backdrop-blur-sm px-5 py-5 md:px-6 md:py-6">
+                <p className="text-foreground/90 leading-relaxed text-base md:text-lg">
+                  Caso o traje escolhido tenha maior abertura, pedimos
+                  gentilmente o uso de uma <strong>enxarpe</strong> ou de um{" "}
+                  <strong>casaquinho não transparente</strong> durante a
+                  cerimônia religiosa.
+                </p>
+              </div>
+
+              <div className="mt-5">
+                <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                  Uma escolha simples que contribui para o conforto, para a
+                  beleza do conjunto e para o respeito ao ambiente da igreja.
+                </p>
+              </div>
+
+              <div className="mt-6 flex flex-wrap justify-center gap-3">
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold/20 bg-background/80 text-sm text-foreground/85">
+                  <Check className="w-4 h-4 text-gold" />
+                  Mais conforto
+                </span>
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold/20 bg-background/80 text-sm text-foreground/85">
+                  <Check className="w-4 h-4 text-gold" />
+                  Mais elegância
+                </span>
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold/20 bg-background/80 text-sm text-foreground/85">
+                  <Check className="w-4 h-4 text-gold" />
+                  Mais sintonia com a cerimônia
+                </span>
+              </div>
             </div>
           </div>
         </div>
