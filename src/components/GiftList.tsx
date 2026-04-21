@@ -10,7 +10,9 @@ const GiftList = () => {
   const [selectedGift, setSelectedGift] = useState<Gift | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<GiftCategory | "all">("all");
+  const [selectedCategory, setSelectedCategory] = useState<
+    GiftCategory | "all"
+  >("all");
   const [sortBy, setSortBy] = useState<SortOption>("default");
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -31,7 +33,7 @@ const GiftList = () => {
           observer = null;
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     const element = sectionRef.current;
@@ -92,9 +94,6 @@ const GiftList = () => {
           <h2 className="font-script text-5xl sm:text-6xl md:text-7xl text-foreground mb-4">
             Presentes
           </h2>
-          <p className="text-muted-foreground max-w-lg mx-auto">
-            Sua presença é o maior presente, mas se quiser nos presentear, escolha algo especial da nossa lista.
-          </p>
         </div>
 
         {/* Filters */}
@@ -154,7 +153,9 @@ const GiftList = () => {
           </div>
 
           {/* Category filters and sort (mobile collapsible) */}
-          <div className={`space-y-4 ${isFiltersOpen ? "block" : "hidden sm:block"}`}>
+          <div
+            className={`space-y-4 ${isFiltersOpen ? "block" : "hidden sm:block"}`}
+          >
             {/* Sort (mobile) */}
             <div className="sm:hidden">
               <select
