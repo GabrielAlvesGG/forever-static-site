@@ -44,7 +44,7 @@ export const weddingConfig = {
       key: "+5511954998484",
       recipientName: "Gabriella Simões Apostolou",
       city: "SAO PAULO",
-      bank: "Nubank"
+      bank: "Nubank",
     },
     {
       label: "PIX do Noivo",
@@ -53,7 +53,6 @@ export const weddingConfig = {
       city: "SAO PAULO",
       bank: "Nubank",
     },
-
   ],
 
   // Nossa História - texto emotivo sobre o casal
