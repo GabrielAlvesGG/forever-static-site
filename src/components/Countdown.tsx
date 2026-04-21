@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Calendar } from "lucide-react";
+import { Calendar, Clock3 } from "lucide-react";
 import { weddingConfig } from "@/data/config";
 
 interface TimeLeft {
@@ -10,8 +10,15 @@ interface TimeLeft {
 }
 
 const Countdown = () => {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-  const [status, setStatus] = useState<"counting" | "today" | "passed">("counting");
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+  const [status, setStatus] = useState<"counting" | "today" | "passed">(
+    "counting",
+  );
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -22,7 +29,7 @@ const Countdown = () => {
           setIsVisible(true);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.2 },
     );
 
     if (sectionRef.current) {
@@ -38,9 +45,7 @@ const Countdown = () => {
       const now = new Date();
       const difference = weddingDate.getTime() - now.getTime();
 
-      // Check if it's the wedding day
-      const isToday =
-        weddingDate.toDateString() === now.toDateString();
+      const isToday = weddingDate.toDateString() === now.toDateString();
 
       if (isToday) {
         setStatus("today");
@@ -61,10 +66,8 @@ const Countdown = () => {
       };
     };
 
-    // Initial calculation
     setTimeLeft(calculateTimeLeft());
 
-    // Update every second
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
@@ -73,15 +76,19 @@ const Countdown = () => {
   }, []);
 
   const weddingDate = new Date(weddingConfig.weddingDate);
+
   const formattedDate = weddingDate.toLocaleDateString("pt-BR", {
     weekday: "long",
     day: "2-digit",
     month: "long",
     year: "numeric",
+    timeZone: "America/Sao_Paulo",
   });
+
   const formattedTime = weddingDate.toLocaleTimeString("pt-BR", {
     hour: "2-digit",
     minute: "2-digit",
+    timeZone: "America/Sao_Paulo",
   });
 
   const timeUnits = [
@@ -96,14 +103,12 @@ const Countdown = () => {
       ref={sectionRef}
       className="py-20 md:py-32 bg-gradient-hero relative overflow-hidden"
     >
-      {/* Decorative elements */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute bottom-0 left-1/4 w-48 h-48 bg-gold/10 rounded-full blur-3xl" />
         <div className="absolute top-1/4 right-1/4 w-32 h-32 bg-rose/20 rounded-full blur-2xl" />
       </div>
 
       <div className="container relative z-10 px-4">
-        {/* Section title */}
         <div
           className={`text-center mb-12 transition-all duration-1000 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -117,20 +122,45 @@ const Countdown = () => {
           </h2>
         </div>
 
-        {/* Date info */}
         <div
-          className={`flex flex-col items-center gap-2 mb-12 transition-all duration-1000 delay-200 ${
+          className={`max-w-3xl mx-auto mb-14 transition-all duration-1000 delay-200 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <Calendar className="w-5 h-5 text-gold" />
-            <span className="font-serif text-lg capitalize">{formattedDate}</span>
+          <div className="rounded-3xl border border-gold/20 bg-card/95 backdrop-blur-sm shadow-card px-6 py-7 sm:px-8 sm:py-8">
+            <div className="flex flex-col items-center text-center gap-5">
+              <div className="flex items-center gap-2 text-gold uppercase tracking-[0.25em] text-xs sm:text-sm">
+                <Calendar className="w-4 h-4" />
+                <span>Data da cerimônia</span>
+              </div>
+
+              <p className="font-serif text-xl sm:text-2xl md:text-3xl text-foreground capitalize leading-relaxed">
+                {formattedDate}
+              </p>
+
+              <div className="w-16 h-px bg-gold/30" />
+
+              <div className="flex flex-col items-center gap-2">
+                <div className="flex items-center gap-2 text-gold uppercase tracking-[0.25em] text-xs sm:text-sm">
+                  <Clock3 className="w-4 h-4" />
+                  <span>Horário da cerimônia</span>
+                </div>
+
+                <div className="inline-flex items-center justify-center rounded-full border border-gold/30 bg-gold/10 px-6 py-3 shadow-sm">
+                  <span className="font-serif text-3xl sm:text-4xl md:text-5xl text-gold font-medium leading-none">
+                    {formattedTime}
+                  </span>
+                </div>
+
+                <p className="text-sm sm:text-base text-muted-foreground">
+                  Chegue com antecedência para aproveitar cada momento com
+                  calma.
+                </p>
+              </div>
+            </div>
           </div>
-          <span className="text-gold font-medium">{formattedTime}</span>
         </div>
 
-        {/* Countdown or message */}
         {status === "counting" ? (
           <div
             className={`flex flex-wrap justify-center gap-4 md:gap-8 transition-all duration-1000 delay-400 ${
