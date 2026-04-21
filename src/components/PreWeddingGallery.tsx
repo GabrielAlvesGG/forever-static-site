@@ -1,5 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import { Camera, Heart, X, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Camera,
+  Heart,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 import preWedding1 from "../img/prewedding-1.jpeg";
@@ -43,6 +51,7 @@ const preWeddingPhotos = [
 const PreWeddingGallery = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState<number | null>(null);
+  const [isGalleryExpanded, setIsGalleryExpanded] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -86,6 +95,10 @@ const PreWeddingGallery = () => {
     }
   };
 
+  const toggleGallery = () => {
+    setIsGalleryExpanded((prev) => !prev);
+  };
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (selectedPhoto === null) return;
@@ -111,13 +124,14 @@ const PreWeddingGallery = () => {
 
       <div className="container relative z-10 px-4">
         <div
-          className={`text-center mb-16 transition-all duration-1000 ${
+          className={`text-center mb-10 transition-all duration-1000 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
           <p className="text-gold tracking-[0.3em] uppercase text-sm mb-4">
             Momentos Especiais
           </p>
+
           <h2 className="font-script text-5xl sm:text-6xl md:text-7xl text-foreground">
             Pré-Wedding
           </h2>
@@ -133,43 +147,80 @@ const PreWeddingGallery = () => {
         </div>
 
         <div
-          className={`grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto transition-all duration-1000 delay-300 ${
+          className={`flex justify-center mb-10 transition-all duration-1000 delay-200 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          {preWeddingPhotos.map((photo, index) => (
-            <div
-              key={photo.id}
-              className={`group relative aspect-[4/5] overflow-hidden rounded-lg cursor-pointer transition-all duration-500 hover:shadow-xl ${
-                index === 0 ? "md:row-span-2 md:aspect-auto" : ""
-              }`}
-              style={{ animationDelay: `${index * 100}ms` }}
-              onClick={() => openLightbox(index)}
-            >
-              <img
-                src={photo.src}
-                alt={photo.alt}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-colors duration-300 flex items-center justify-center">
-                <Heart className="w-8 h-8 text-background opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
-            </div>
-          ))}
+          <button
+            type="button"
+            onClick={toggleGallery}
+            className="inline-flex items-center gap-3 rounded-full border border-gold/30 bg-card px-6 py-3 text-sm sm:text-base text-foreground shadow-sm transition-all duration-300 hover:border-gold/50 hover:shadow-md"
+            aria-expanded={isGalleryExpanded}
+            aria-controls="prewedding-grid"
+          >
+            <Camera className="w-4 h-4 text-gold" />
+            <span className="font-medium">
+              {isGalleryExpanded ? "Minimizar fotos" : "Ver fotos"}
+            </span>
+            {isGalleryExpanded ? (
+              <ChevronUp className="w-4 h-4 text-gold" />
+            ) : (
+              <ChevronDown className="w-4 h-4 text-gold" />
+            )}
+          </button>
         </div>
 
         <div
-          className={`flex justify-center mt-12 transition-all duration-1000 delay-500 ${
-            isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
+          id="prewedding-grid"
+          className={`overflow-hidden transition-all duration-700 ease-in-out ${
+            isGalleryExpanded
+              ? "max-h-[5000px] opacity-100"
+              : "max-h-0 opacity-0"
           }`}
         >
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-gold/50" />
-            <div className="w-3 h-3 rounded-full bg-gold/70" />
-            <Heart className="w-6 h-6 text-gold fill-gold" />
-            <div className="w-3 h-3 rounded-full bg-gold/70" />
-            <div className="w-2 h-2 rounded-full bg-gold/50" />
+          <div
+            className={`grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto pb-2 transition-all duration-1000 delay-300 ${
+              isVisible && isGalleryExpanded
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
+            }`}
+          >
+            {preWeddingPhotos.map((photo, index) => (
+              <div
+                key={photo.id}
+                className={`group relative aspect-[4/5] overflow-hidden rounded-lg cursor-pointer transition-all duration-500 hover:shadow-xl ${
+                  index === 0 ? "md:row-span-2 md:aspect-auto" : ""
+                }`}
+                style={{ animationDelay: `${index * 100}ms` }}
+                onClick={() => openLightbox(index)}
+              >
+                <img
+                  src={photo.src}
+                  alt={photo.alt}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-colors duration-300 flex items-center justify-center">
+                  <Heart className="w-8 h-8 text-background opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div
+            className={`flex justify-center mt-12 transition-all duration-1000 delay-500 ${
+              isVisible && isGalleryExpanded
+                ? "opacity-100 scale-100"
+                : "opacity-0 scale-95"
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-2 rounded-full bg-gold/50" />
+              <div className="w-3 h-3 rounded-full bg-gold/70" />
+              <Heart className="w-6 h-6 text-gold fill-gold" />
+              <div className="w-3 h-3 rounded-full bg-gold/70" />
+              <div className="w-2 h-2 rounded-full bg-gold/50" />
+            </div>
           </div>
         </div>
       </div>
