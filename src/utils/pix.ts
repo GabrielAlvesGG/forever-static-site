@@ -6,14 +6,21 @@ const onlyAscii = (value: string) =>
 
 const normalizePixText = (value: string, maxLength?: number) => {
   let text = onlyAscii(value).trim().toUpperCase();
+
   if (maxLength) {
     text = text.slice(0, maxLength);
   }
+
   return text;
 };
 
 const formatField = (id: string, value: string) => {
+  if (value.length > 99) {
+    throw new Error(`Campo PIX ${id} excedeu 99 caracteres.`);
+  }
+
   const size = value.length.toString().padStart(2, "0");
+
   return `${id}${size}${value}`;
 };
 
@@ -29,6 +36,7 @@ const crc16 = (str: string) => {
       } else {
         crc <<= 1;
       }
+
       crc &= 0xffff;
     }
   }
@@ -53,37 +61,60 @@ export const buildPixPayload = ({
   description,
   txid,
 }: PixPayloadParams) => {
+  const normalizedPixKey = pixKey.trim();
+
   const gui = formatField("00", "BR.GOV.BCB.PIX");
+  const pixKeyField = formatField("01", normalizedPixKey);
 
-  const pixKeyField = formatField("01", pixKey);
+  const baseMerchantInfo = `${gui}${pixKeyField}`;
 
-  const descriptionField =
-    description && description.trim()
-      ? formatField("02", normalizePixText(description, 72))
-      : "";
+  let descriptionField = "";
+
+  if (description && description.trim()) {
+    const maxMerchantInfoLength = 99;
+    const maxDescriptionFieldLength =
+      maxMerchantInfoLength - baseMerchantInfo.length;
+
+    const maxDescriptionValueLength = Math.max(
+      0,
+      maxDescriptionFieldLength - 4,
+    );
+
+    if (maxDescriptionValueLength > 0) {
+      descriptionField = formatField(
+        "02",
+        normalizePixText(description, maxDescriptionValueLength),
+      );
+    }
+  }
 
   const merchantAccountInfo = formatField(
     "26",
-    `${gui}${pixKeyField}${descriptionField}`,
+    `${baseMerchantInfo}${descriptionField}`,
   );
 
   const payloadFormatIndicator = formatField("00", "01");
-  const pointOfInitiationMethod = formatField("01", "12");
+
+  const hasAmount = typeof amount === "number" && amount > 0;
+
+  const pointOfInitiationMethod = formatField("01", hasAmount ? "12" : "11");
+
   const merchantCategoryCode = formatField("52", "0000");
   const transactionCurrency = formatField("53", "986");
 
-  const transactionAmount =
-    typeof amount === "number" && amount > 0
-      ? formatField("54", amount.toFixed(2))
-      : "";
+  const transactionAmount = hasAmount
+    ? formatField("54", amount.toFixed(2))
+    : "";
 
   const countryCode = formatField("58", "BR");
   const merchantName = formatField("59", normalizePixText(recipientName, 25));
   const merchantCity = formatField("60", normalizePixText(city, 15));
 
+  const normalizedTxid = normalizePixText(txid || "***", 25);
+
   const additionalDataFieldTemplate = formatField(
     "62",
-    formatField("05", normalizePixText(txid || "***", 25)),
+    formatField("05", normalizedTxid),
   );
 
   const payloadWithoutCrc = [
