@@ -43,20 +43,20 @@ const GiftModal = ({ gift, isOpen, onClose }: GiftModalProps) => {
     setSelectedPixIndex(0);
   }, [gift, isOpen]);
 
-  const pixPayload = useMemo(() => {
-    if (!gift || !selectedPix) return "";
+const pixPayload = useMemo(() => {
+  if (!gift || !selectedPix) return "";
 
-    const amount = gift.value > 0 ? gift.value :1;
+  const amount = gift.value > 0 ? gift.value : undefined;
 
-    return buildPixPayload({
-      pixKey: selectedPix.key,
-      recipientName: selectedPix.recipientName,
-      city: selectedPix.city,
-      amount,
-      description: `Presente: ${gift.name}`,
-      txid: `GIFT${gift.id}`,
-    });
-  }, [gift, selectedPix]);
+  return buildPixPayload({
+    pixKey: selectedPix.key,
+    recipientName: selectedPix.recipientName,
+    city: selectedPix.city,
+    amount,
+    description: `Presente: ${gift.name}`,
+    txid: `GIFT${gift.id}`,
+  });
+}, [gift, selectedPix]);
 
   useEffect(() => {
     const generateQrCode = async () => {
