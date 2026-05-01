@@ -46,7 +46,7 @@ const GiftModal = ({ gift, isOpen, onClose }: GiftModalProps) => {
   const pixPayload = useMemo(() => {
     if (!gift || !selectedPix) return "";
 
-    const amount = gift.value > 0 ? gift.value : undefined;
+    const amount = gift.value > 0 ? gift.value :1;
 
     return buildPixPayload({
       pixKey: selectedPix.key,
