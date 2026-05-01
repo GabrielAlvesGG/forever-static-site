@@ -270,7 +270,7 @@ const pixPayload = useMemo(() => {
                  <p className="text-sm text-muted-foreground text-center mt-2">
       Identificação do PIX:{" "}
       <span className="font-semibold text-foreground">
-        {gift.value === 0 ? "CONTRIBUIÇÃO LIVRE" : `PRESENTE ${gift.id}`}
+        {gift.value === 0 ? "CONTRIBUIÇÃO LIVRE" : `PRESENTE ${gift.name}`}
       </span>
     </p>
               </div>
