@@ -267,6 +267,12 @@ const pixPayload = useMemo(() => {
                 <p className="text-xs text-muted-foreground text-center mt-3">
                   Escaneie o QR Code no app do banco
                 </p>
+                 <p className="text-sm text-muted-foreground text-center mt-2">
+      Identificação do PIX:{" "}
+      <span className="font-semibold text-foreground">
+        {gift.value === 0 ? "CONTRIBUIÇÃO LIVRE" : `PRESENTE ${gift.id}`}
+      </span>
+    </p>
               </div>
             )}
 
